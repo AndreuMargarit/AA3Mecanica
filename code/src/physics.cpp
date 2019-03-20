@@ -49,7 +49,7 @@ bool renderMesh = false;
 bool renderFiber = true;
 bool renderCube = false;
 
-FiberStraw fiberS;
+FiberStraw fiberS[100];
 
 //You may have to change this code
 void renderPrims() {
@@ -75,7 +75,7 @@ void renderPrims() {
 		for (int i = 0; i < 100; i++)
 		{
 			Fiber::drawFiber();
-			Fiber::updateFiber(&fiberS.fibers[i].positions[0].x);
+			Fiber::updateFiber(&fiberS[i].positions[0].x);
 		}
 	}
 
@@ -114,7 +114,7 @@ void PhysicsUpdate(float dt) {
 	
 	for (int i = 0; i < 100; i++)
 	{
-		Fiber::updateFiber(&fiberS.fibers[i].positions[0].x);
+		Fiber::updateFiber(&fiberS[i].positions[0].x);
 	}
 	
 }
