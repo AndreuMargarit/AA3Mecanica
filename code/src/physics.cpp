@@ -83,6 +83,13 @@ void renderPrims() {
 		Cube::drawCube();
 }
 
+float restLength = 1;
+float mass = 0.1f;
+float ke = 5.f;
+float kd = 0.3f;
+float bounceCoefficient = 0.5;
+
+std::vector<ForceActuator*> forces;
 
 void GUI() {
 	bool show = true;
@@ -91,7 +98,10 @@ void GUI() {
 	// Do your GUI code here....
 	{	
 		ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);//FrameRate
-		
+		ImGui::DragFloat("Rest Length", &restLength, 0.01f, 0.0f, 3.f);
+		ImGui::DragFloat("Mass", &mass, 0.01f, 0.1f, 10.f);
+		ImGui::DragFloat("Ke", &ke, 0.01f, 0.1f, 10.f);
+		ImGui::DragFloat("Kd", &kd, 0.01f, 0.1f, 10.f);
 	}
 	// .........................
 	
@@ -107,13 +117,15 @@ void GUI() {
 
 void PhysicsInit() {
 	
-
+	forces.push_back(new WindForce());
+	forces.push_back(new GravityForce());
 }
 
 void PhysicsUpdate(float dt) {
 	
 	for (int i = 0; i < 100; i++)
 	{
+		verlet(dt, fiberS[i], forces);
 		Fiber::updateFiber(&fiberS[i].positions[0].x);
 	}
 	
