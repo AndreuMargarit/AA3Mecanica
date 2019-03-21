@@ -83,6 +83,22 @@ void renderPrims() {
 		Cube::drawCube();
 }
 
+//Variables de la interfaz de usuario
+bool playSimulation = false;
+bool useSphereCollider = false;
+float sphereY;
+float sphereTurnRadius;
+float sphereTurnSpeed;
+float sphereRadius;
+glm::vec2 k_Stretch;
+glm::vec2 k_Bend;
+float particleLinkDistance;
+float bounceCoefficient = 0.0f;
+float nu = 0.0f;
+bool use_Gravity = false;
+glm::vec3 gravity;
+bool use_Wind = false;
+glm::vec3 wind;
 
 void GUI() {
 	bool show = true;
@@ -91,7 +107,48 @@ void GUI() {
 	// Do your GUI code here....
 	{	
 		ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);//FrameRate
+		ImGui::Checkbox("Play Simulation", &playSimulation);
+		if (ImGui::Button("Reset"))
+		{
+
+		}
+
+		if (ImGui::TreeNode("Spring Parameters"))
+		{
+			ImGui::DragFloat2("K Stretch", &k_Stretch.x, 0.1f);
+			ImGui::DragFloat2("K Bend", &k_Bend.x, 0.1f);
+			ImGui::DragFloat("Particle Link Distance", &particleLinkDistance, 0.1f);
+			ImGui::TreePop();
+		}
+
+		if (ImGui::TreeNode("Elasticity and Friction"))
+		{
+			ImGui::DragFloat("Elastic Coeficient", &bounceCoefficient, 0.1f, 0, 1.0f);
+			ImGui::DragFloat("Friction Coeficient", &nu, 0.1f, 0, 1.0f);
+			ImGui::TreePop();
+		}
+
+
+		if(ImGui::TreeNode("Sphere Parameters"))
+		{
+			ImGui::Checkbox("Use Sphere Collider", &useSphereCollider);
+			ImGui::DragFloat("Sphere Y", &sphereY, 0.1f);
+			ImGui::DragFloat("Sphere Turn Radius", &sphereTurnRadius, 0.1f);
+			ImGui::DragFloat("Sphere Turn Speed", &sphereTurnSpeed, 0.1f);
+			ImGui::DragFloat("Sphere Radius", &sphereRadius, 0.1f);
+			ImGui::TreePop();
+
+		}
 		
+
+		if (ImGui::TreeNode("Forces"))
+		{
+			ImGui::Checkbox("Use Gravity", &use_Gravity);
+			ImGui::DragFloat3("Gravity Accel", &gravity.x, 0.1f);
+			ImGui::Checkbox("Use Wind", &use_Wind);
+			ImGui::DragFloat3("Wind Accel", &wind.x, 0.1f);
+			ImGui::TreePop();
+		}
 	}
 	// .........................
 	
